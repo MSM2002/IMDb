@@ -2,72 +2,46 @@
 
 ## Overview
 
-This project provides multiple methods for loading IMDb's publicly available datasets into a PostgreSQL database. The goal is to offer flexible, efficient data ingestion solutions for researchers, data analysts, and developers working with IMDb's comprehensive movie and TV show datasets.
+This project contains two versions of an automated data import solution for IMDb data files into a PostgreSQL database: one written in **Bash** and one in **Python**.
 
+Both versions perform the following steps:
 
-## Methods of Data Loading
+- **Download Files**: Retrieve gzipped TSV files from specified URLs.
+- **Database Setup**: Connect to PostgreSQL, drop existing tables, and recreate them with a defined schema.
+- **Data Load**: Decompress the downloaded files and load their contents into PostgreSQL using an efficient bulk copy operation.
+- **Cleanup**: Remove temporary files/folders once the update is complete.
 
-This project provides two primary approaches to loading IMDb datasets:
+The complete refresh approach is used – each time the script runs, it downloads the full dataset, drops any pre-existing tables, and reloads all the data.
 
-1. **Python Method** (`/python`)
-   - Uses Python's `psycopg2` library
-   - Efficient on-the-fly decompression
-   - Cross-platform compatibility
-   - Detailed error handling
+## PostgreSQL Database Schema
 
-2. **Bash Method** (`/bash`)
-   - Uses native shell commands
-   - Leverages PostgreSQL's COPY command
-   - Ideal for Unix-like systems
-   - Minimal dependencies
+Both versions create the following tables:
 
-## Prerequisites
+- **title_akas**
+- **title_basics**
+- **title_crew**
+- **title_episode**
+- **title_principals**
+- **title_ratings**
+- **name_basics**
 
-- PostgreSQL
-- Python 3.x (for Python method)
-- Bash shell (for Bash method)
-
-## Data Source
-
-Datasets are sourced from [IMDb Interfaces](https://datasets.imdbws.com/)
-
-## Required Files
-
-- title.akas.tsv.gz
-- title.basics.tsv.gz
-- title.crew.tsv.gz
-- title.episode.tsv.gz
-- title.principals.tsv.gz
-- title.ratings.tsv.gz
-- name.basics.tsv.gz
-
-## Performance Comparison
-
-| Aspect           | Python Method | Bash Method |
-|-----------------|--------------|-------------|
-| Portability     | Cross-platform | Unix-like systems |
-| Dependency      | psycopg2     | Shell utilities |
-| Error Handling  | Comprehensive | Basic |
-| Memory Usage    | Low          | Moderate |
-
-## Getting Started
-
-1. Clone the repository
-2. Choose your preferred method (Python or Bash)
-3. Follow the README in the respective subdirectory
+Each table uses plain text columns for fields that IMDb originally stores as arrays.
 
 ## License
 
-See the [LICENSE](/LICENSE) file for more details.
+See the [LICENSE](LICENSE.txt) file for more details.
 
-## Contributing
+## Summary
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a Pull Request
+This project provides two complete solutions (Bash and Python) for automating a full refresh of IMDb data in a PostgreSQL database. For environments where a complete download and reload is more efficient, both scripts drop existing tables and load the full dataset. Daily updates can be enabled through Windows Task Scheduler, ensuring your database remains up-to-date.
 
-## Contact
+Feel free to modify the scripts according to your specific requirements.
 
-For issues or questions, please open a GitHub issue.
+Code and README files for Bash and Python are in their respective directories.
+
+## Acknowledgements
+
+Information courtesy of
+IMDb
+(https://www.imdb.com).
+Used with permission.
